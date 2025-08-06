@@ -61,7 +61,7 @@ const getEnvelopeById = (id) => {
 
 // Update envelope by ID
 const updateEnvelopeById = (id, newData) => {
-  const envelope = getEnvelopeById(id); // throws if not found
+  const envelope = getEnvelopeById(id); // throws error if not found
 
   // Validate category uniqueness (case-insensitive)
   if (newData.category !== undefined) {
@@ -96,23 +96,80 @@ const updateEnvelopeById = (id, newData) => {
       );
     }
 
-    // Ensure budget >= current balance (no shrinking below unspent funds)
-    if (newData.budget < envelope.balance) {
-      throw new Error(
-        `Budget cannot be less than current balance (${envelope.balance}).`
-      );
-    }
-
-    // Adjust balance if budget increased
     const diff = newData.budget - envelope.budget;
+
     if (diff > 0) {
+      // Budget increased: add difference to balance
       envelope.balance += diff;
+    } else if (diff < 0) {
+      // Budget decreased
+      const decreaseAmount = Math.abs(diff);
+
+      if (envelope.balance === 0) {
+        throw new Error(
+          "Cannot reduce budget because envelope balance is zero (fully spent)."
+        );
+      }
+
+      if (envelope.balance >= decreaseAmount) {
+        envelope.balance -= decreaseAmount;
+      } else {
+        throw new Error(
+          `Cannot reduce budget by ${decreaseAmount} because current balance is only ${envelope.balance}.`
+        );
+      }
     }
 
     envelope.budget = newData.budget;
   }
 
+  // Update balance (set new available balance)
+  if (typeof newData.balance === "number") {
+    if (newData.balance < 0) {
+      throw new Error("Balance cannot be negative.");
+    }
+
+    if (newData.balance > envelope.budget) {
+      throw new Error(`Balance cannot exceed the budget (${envelope.budget}).`);
+    }
+
+    envelope.balance = newData.balance;
+  }
+
   return envelope;
+};
+
+//Delete envelope by ID
+const deleteEnvelopeById = (id) => {
+  const index = envelopesList.findIndex((env) => env.id === id);
+  if (index !== -1) {
+    envelopesList.splice(index, 1);
+    return true; // Successfully deleted
+  }
+  return false;
+};
+
+//TRANSFER budget from one envelope to another
+const transferBudget = (fromId, toId, amount) => {
+  // Get envelopes
+  const fromEnv = getEnvelopeById(fromId);
+  const toEnv = getEnvelopeById(toId);
+
+  // Validate amount
+  if (typeof amount !== "number" || amount <= 0) {
+    throw new Error("Transfer amount must be a positive number.");
+  }
+
+  // Check balance in source
+  if (fromEnv.balance < amount) {
+    throw new Error("Insufficient balance in source envelope.");
+  }
+
+  // Perform transfer
+  fromEnv.balance -= amount;
+  toEnv.balance += amount;
+
+  return { fromEnv, toEnv };
 };
 
 module.exports = {
@@ -123,4 +180,6 @@ module.exports = {
   createEnv,
   getEnvelopeById,
   updateEnvelopeById,
+  deleteEnvelopeById,
+  transferBudget,
 };
