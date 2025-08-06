@@ -1,0 +1,183 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* Base styling */
+body {
+  font-family: "Press Start 2P", cursive, monospace;
+  background-color: #f7f7e8; /* soft cream background like GBA menus */
+  color: #222222;
+  margin: 0;
+  padding: 1rem;
+  user-select: none;
+}
+
+/* Headers */
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #cc0000; /* Fire Red signature red */
+  text-shadow: 1px 1px 0 #f8e71c,
+    /* bright yellow highlight */ 2px 2px 0 #660000; /* dark red shadow */
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+/* Forms */
+form {
+  background: #e0d9b8; /* light yellowish beige panel */
+  border: 3px solid #cc0000;
+  border-radius: 0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: inset 0 2px 0 #ffffff, /* top highlight */ inset 0 -2px 0 #a30000; /* bottom shadow */
+  font-size: 0.75rem;
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+  color: #660000;
+  text-shadow: 1px 1px 0 #f8e71c;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  font-family: "Press Start 2P", monospace;
+  font-size: 0.75rem;
+  padding: 0.4rem;
+  margin-bottom: 1rem;
+  border: 2px solid #cc0000;
+  border-radius: 0;
+  background-color: #fff8b8;
+  box-sizing: border-box;
+  box-shadow: inset 1px 1px 0 #fff9a3, inset -1px -1px 0 #a30000;
+  transition: background-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  background-color: #fffecd;
+  border-color: #f8e71c;
+  box-shadow: 0 0 5px #f8e71c;
+}
+
+/* Buttons */
+button {
+  font-family: "Press Start 2P", monospace;
+  background-color: #cc0000;
+  color: #fff8b8;
+  font-size: 0.75rem;
+  padding: 0.7rem 1rem;
+  border: 3px solid #660000;
+  border-radius: 0;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  width: 100%;
+  box-shadow: inset 0 2px 0 #ffea5c, inset 0 -2px 0 #660000;
+  text-shadow: 1px 1px #660000;
+}
+
+button:hover {
+  background-color: #990000;
+  border-color: #330000;
+  box-shadow: inset 0 2px 0 #f8e71c, inset 0 -2px 0 #330000;
+}
+
+/* Container for envelopes */
+.envelopes-list {
+  max-width: 480px;
+  margin: 1rem auto;
+  border: 3px solid #cc0000;
+  border-radius: 0;
+  background: #fff8b8;
+  padding: 1rem;
+  font-size: 0.75rem;
+  box-shadow: inset 0 2px 0 #fffacd, inset 0 -2px 0 #660000;
+}
+
+/* Individual envelope blocks */
+.envelope {
+  border-bottom: 2px solid #cc0000;
+  padding: 0.5rem 0;
+  color: #660000;
+  text-shadow: 1px 1px 0 #f8e71c;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.envelope:last-child {
+  border-bottom: none;
+}
+
+/* Error messages */
+.error {
+  color: #990000;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 1px 1px #f8e71c;
+}
+
+/* Feature buttons container */
+#feature-buttons {
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto 1rem auto;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+#feature-buttons button {
+  flex: 1;
+  font-size: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 0;
+  box-shadow: inset 0 2px 0 #ffea5c, inset 0 -2px 0 #660000;
+  text-shadow: 1px 1px #660000;
+}
+
+/* Forms container for feature forms */
+#feature-forms {
+  max-width: 480px;
+  margin: 0 auto 2rem auto;
+}
+
+/* Hide forms by default (they get displayed via JS) */
+form {
+  display: block;
+}
+
+/* Remove outline from buttons on focus for pixel look */
+button:focus {
+  outline: none;
+}
+
+/* Scrollbar styling for envelopes container (optional) */
+.envelopes-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for modern browsers */
+.envelopes-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.envelopes-list::-webkit-scrollbar-track {
+  background: #fff8b8;
+}
+
+.envelopes-list::-webkit-scrollbar-thumb {
+  background-color: #cc0000;
+  border-radius: 4px;
+  border: 2px solid #fff8b8;
+}

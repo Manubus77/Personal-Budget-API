@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Envelope Budget Manager</title>
+    <link rel="stylesheet" href="frontend/style.css" />
+    <style>
+      /* Pixel font fallback just to preview */
+      @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+      body {
+        font-family: "Press Start 2P", cursive, monospace;
+        background-color: #f4f1e7; /* Pokémon Fire Red light bg vibe */
+        color: #2e2e2e;
+        margin: 0;
+        padding: 1rem;
+        user-select: none;
+      }
+      h1,
+      h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #d92323; /* Fire Red accent */
+        text-shadow: 2px 2px #ffeb99;
+      }
+      form {
+        background: #fff;
+        border: 4px solid #d92323;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-weight: bold;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        font-family: "Press Start 2P", monospace;
+        font-size: 0.75rem;
+        padding: 0.4rem;
+        margin-bottom: 1rem;
+        border: 2px solid #d92323;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        font-family: "Press Start 2P", monospace;
+        background-color: #d92323;
+        color: #fff;
+        font-size: 0.75rem;
+        padding: 0.7rem 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.2s ease;
+        width: 100%;
+      }
+      button:hover {
+        background-color: #b01a1a;
+      }
+      .envelopes-list {
+        max-width: 480px;
+        margin: 1rem auto;
+        border: 4px solid #d92323;
+        border-radius: 8px;
+        background: #fff;
+        padding: 1rem;
+        font-size: 0.75rem;
+      }
+      .envelope {
+        border-bottom: 2px solid #d92323;
+        padding: 0.5rem 0;
+      }
+      .envelope:last-child {
+        border-bottom: none;
+      }
+      .error {
+        color: #b01a1a;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      /* Hide feature buttons and forms initially */
+      #feature-buttons,
+      #feature-forms {
+        display: none;
+      }
+
+      /* Style for feature buttons container */
+      #feature-buttons {
+        text-align: center;
+        margin: 1rem auto;
+        max-width: 480px;
+      }
+      #feature-buttons button {
+        width: auto;
+        margin: 0 0.5rem 0.5rem 0.5rem;
+        min-width: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Envelope Budget Manager</h1>
+
+    <!-- Set Total Budget (visible initially) -->
+    <form id="set-total-budget-form">
+      <h2>Set Total Budget</h2>
+      <label for="total-budget">Total Budget:</label>
+      <input
+        type="number"
+        id="total-budget"
+        min="1"
+        step="1"
+        required
+        placeholder="Set your total budget"
+      />
+      <button type="submit">Set Total Budget</button>
+    </form>
+
+    <!-- Feature Buttons (hidden initially, shown after budget set) -->
+    <div id="feature-buttons">
+      <button data-target="create-envelope-form" type="button">
+        Create Envelope
+      </button>
+      <button data-target="update-envelope-form" type="button">
+        Update Envelope
+      </button>
+      <button data-target="delete-envelope-form" type="button">
+        Delete Envelope
+      </button>
+      <button data-target="transfer-budget-form" type="button">
+        Transfer Budget
+      </button>
+    </div>
+
+    <!-- Feature Forms (hidden initially) -->
+    <div id="feature-forms">
+      <!-- Create Envelope -->
+      <form id="create-envelope-form" style="display: none">
+        <h2>Create Envelope</h2>
+        <label for="category">Category:</label>
+        <input
+          type="text"
+          id="category"
+          required
+          placeholder="e.g. Groceries"
+        />
+        <label for="budget">Budget:</label>
+        <input
+          type="number"
+          id="budget"
+          min="1"
+          step="1"
+          required
+          placeholder="Budget amount"
+        />
+        <button type="submit">Create Envelope</button>
+      </form>
+
+      <!-- Update Envelope -->
+      <form id="update-envelope-form" style="display: none">
+        <h2>Update Envelope</h2>
+        <label for="update-id">Envelope ID:</label>
+        <input
+          type="number"
+          id="update-id"
+          min="1"
+          step="1"
+          required
+          placeholder="Envelope ID"
+        />
+        <label for="update-category">Category (optional):</label>
+        <input type="text" id="update-category" placeholder="New category" />
+        <label for="update-budget">Budget (optional):</label>
+        <input
+          type="number"
+          id="update-budget"
+          min="1"
+          step="1"
+          placeholder="New budget"
+        />
+        <label for="update-balance">Balance (optional):</label>
+        <input
+          type="number"
+          id="update-balance"
+          min="0"
+          step="1"
+          placeholder="New balance"
+        />
+        <button type="submit">Update Envelope</button>
+      </form>
+
+      <!-- Delete Envelope -->
+      <form id="delete-envelope-form" style="display: none">
+        <h2>Delete Envelope</h2>
+        <label for="delete-id">Envelope ID:</label>
+        <input
+          type="number"
+          id="delete-id"
+          min="1"
+          step="1"
+          required
+          placeholder="Envelope ID"
+        />
+        <button type="submit">Delete Envelope</button>
+      </form>
+
+      <!-- Transfer Budget -->
+      <form id="transfer-budget-form" style="display: none">
+        <h2>Transfer Budget</h2>
+        <label for="from-id">From Envelope ID:</label>
+        <input
+          type="number"
+          id="from-id"
+          min="1"
+          step="1"
+          required
+          placeholder="Source envelope ID"
+        />
+        <label for="to-id">To Envelope ID:</label>
+        <input
+          type="number"
+          id="to-id"
+          min="1"
+          step="1"
+          required
+          placeholder="Destination envelope ID"
+        />
+        <label for="amount">Amount:</label>
+        <input
+          type="number"
+          id="amount"
+          min="1"
+          step="1"
+          required
+          placeholder="Amount to transfer"
+        />
+        <button type="submit">Transfer</button>
+      </form>
+    </div>
+
+    <!-- Envelope List -->
+    <section class="envelopes-list" id="envelopes-list">
+      <h2>Envelopes</h2>
+      <div id="envelopes-container">
+        <!-- Envelopes will be dynamically loaded here -->
+      </div>
+    </section>
+
+    <script src="frontend/script.js" defer></script>
+  </body>
+</html>
